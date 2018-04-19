@@ -5,7 +5,9 @@
 }(this, (function (exports,core,brace,monokai,html,forms) { 'use strict';
 
 var AceEditorDirective = (function () {
-    function AceEditorDirective(elementRef) {
+    function AceEditorDirective(elementRef, zone) {
+        var _this = this;
+        this.zone = zone;
         this.textChanged = new core.EventEmitter();
         this.textChange = new core.EventEmitter();
         this._options = {};
@@ -16,12 +18,17 @@ var AceEditorDirective = (function () {
         this._durationBeforeCallback = 0;
         this._text = "";
         var el = elementRef.nativeElement;
-        this.editor = ace["edit"](el);
+        this.zone.runOutsideAngular(function () {
+            _this.editor = ace["edit"](el);
+        });
         this.editor.$blockScrolling = Infinity;
     }
     AceEditorDirective.prototype.ngOnInit = function () {
         this.init();
         this.initEvents();
+    };
+    AceEditorDirective.prototype.ngOnDestroy = function () {
+        this.editor.destroy();
     };
     AceEditorDirective.prototype.init = function () {
         this.editor.setOptions(this._options || {});
@@ -35,14 +42,17 @@ var AceEditorDirective = (function () {
         this.editor.on('paste', function () { return _this.updateText(); });
     };
     AceEditorDirective.prototype.updateText = function () {
+        var _this = this;
         var newVal = this.editor.getValue(), that = this;
         if (newVal === this.oldText) {
             return;
         }
         if (!this._durationBeforeCallback) {
             this._text = newVal;
-            this.textChange.emit(newVal);
-            this.textChanged.emit(newVal);
+            this.zone.run(function () {
+                _this.textChange.emit(newVal);
+                _this.textChanged.emit(newVal);
+            });
         }
         else {
             if (this.timeoutSaving != null) {
@@ -50,8 +60,10 @@ var AceEditorDirective = (function () {
             }
             this.timeoutSaving = setTimeout(function () {
                 that._text = newVal;
-                that.textChange.emit(newVal);
-                that.textChanged.emit(newVal);
+                this.zone.run(function () {
+                    that.textChange.emit(newVal);
+                    that.textChanged.emit(newVal);
+                });
                 that.timeoutSaving = null;
             }, this._durationBeforeCallback);
         }
@@ -151,6 +163,7 @@ var AceEditorDirective = (function () {
     /** @nocollapse */
     AceEditorDirective.ctorParameters = function () { return [
         { type: core.ElementRef, },
+        { type: core.NgZone, },
     ]; };
     AceEditorDirective.propDecorators = {
         "textChanged": [{ type: core.Output },],
@@ -167,7 +180,9 @@ var AceEditorDirective = (function () {
 }());
 
 var AceEditorComponent = (function () {
-    function AceEditorComponent(elementRef) {
+    function AceEditorComponent(elementRef, zone) {
+        var _this = this;
+        this.zone = zone;
         this.textChanged = new core.EventEmitter();
         this.textChange = new core.EventEmitter();
         this.style = {};
@@ -183,12 +198,17 @@ var AceEditorComponent = (function () {
         this._onTouched = function () {
         };
         var el = elementRef.nativeElement;
-        this._editor = ace["edit"](el);
+        this.zone.runOutsideAngular(function () {
+            _this._editor = ace['edit'](el);
+        });
         this._editor.$blockScrolling = Infinity;
     }
     AceEditorComponent.prototype.ngOnInit = function () {
         this.init();
         this.initEvents();
+    };
+    AceEditorComponent.prototype.ngOnDestroy = function () {
+        this._editor.destroy();
     };
     AceEditorComponent.prototype.init = function () {
         this.setOptions(this._options || {});
@@ -202,14 +222,17 @@ var AceEditorComponent = (function () {
         this._editor.on('paste', function () { return _this.updateText(); });
     };
     AceEditorComponent.prototype.updateText = function () {
+        var _this = this;
         var newVal = this._editor.getValue(), that = this;
         if (newVal === this.oldText) {
             return;
         }
         if (!this._durationBeforeCallback) {
             this._text = newVal;
-            this.textChange.emit(newVal);
-            this.textChanged.emit(newVal);
+            this.zone.run(function () {
+                _this.textChange.emit(newVal);
+                _this.textChanged.emit(newVal);
+            });
             this._onChange(newVal);
         }
         else {
@@ -218,8 +241,10 @@ var AceEditorComponent = (function () {
             }
             this.timeoutSaving = setTimeout(function () {
                 that._text = newVal;
-                that.textChange.emit(newVal);
-                that.textChanged.emit(newVal);
+                this.zone.run(function () {
+                    that.textChange.emit(newVal);
+                    that.textChanged.emit(newVal);
+                });
                 that.timeoutSaving = null;
             }, this._durationBeforeCallback);
         }
@@ -352,6 +377,7 @@ var AceEditorComponent = (function () {
     /** @nocollapse */
     AceEditorComponent.ctorParameters = function () { return [
         { type: core.ElementRef, },
+        { type: core.NgZone, },
     ]; };
     AceEditorComponent.propDecorators = {
         "textChanged": [{ type: core.Output },],
@@ -384,8 +410,6 @@ var AceEditorModule = (function () {
                     exports: list
                 },] },
     ];
-    /** @nocollapse */
-    AceEditorModule.ctorParameters = function () { return []; };
     return AceEditorModule;
 }());
 

@@ -16,8 +16,6 @@ var AceEditorModule = (function () {
                     exports: list
                 },] },
     ];
-    /** @nocollapse */
-    AceEditorModule.ctorParameters = function () { return []; };
     return AceEditorModule;
 }());
 export { AceEditorModule };

@@ -1,9 +1,11 @@
-import { Directive, EventEmitter, Output, ElementRef, Input } from "@angular/core";
+import { Directive, EventEmitter, Output, ElementRef, Input, NgZone } from "@angular/core";
 import "brace";
 import "brace/theme/monokai";
 import "brace/mode/html";
 var AceEditorDirective = (function () {
-    function AceEditorDirective(elementRef) {
+    function AceEditorDirective(elementRef, zone) {
+        var _this = this;
+        this.zone = zone;
         this.textChanged = new EventEmitter();
         this.textChange = new EventEmitter();
         this._options = {};
@@ -14,12 +16,17 @@ var AceEditorDirective = (function () {
         this._durationBeforeCallback = 0;
         this._text = "";
         var el = elementRef.nativeElement;
-        this.editor = ace["edit"](el);
+        this.zone.runOutsideAngular(function () {
+            _this.editor = ace["edit"](el);
+        });
         this.editor.$blockScrolling = Infinity;
     }
     AceEditorDirective.prototype.ngOnInit = function () {
         this.init();
         this.initEvents();
+    };
+    AceEditorDirective.prototype.ngOnDestroy = function () {
+        this.editor.destroy();
     };
     AceEditorDirective.prototype.init = function () {
         this.editor.setOptions(this._options || {});
@@ -33,14 +40,17 @@ var AceEditorDirective = (function () {
         this.editor.on('paste', function () { return _this.updateText(); });
     };
     AceEditorDirective.prototype.updateText = function () {
+        var _this = this;
         var newVal = this.editor.getValue(), that = this;
         if (newVal === this.oldText) {
             return;
         }
         if (!this._durationBeforeCallback) {
             this._text = newVal;
-            this.textChange.emit(newVal);
-            this.textChanged.emit(newVal);
+            this.zone.run(function () {
+                _this.textChange.emit(newVal);
+                _this.textChanged.emit(newVal);
+            });
         }
         else {
             if (this.timeoutSaving != null) {
@@ -48,8 +58,10 @@ var AceEditorDirective = (function () {
             }
             this.timeoutSaving = setTimeout(function () {
                 that._text = newVal;
-                that.textChange.emit(newVal);
-                that.textChanged.emit(newVal);
+                this.zone.run(function () {
+                    that.textChange.emit(newVal);
+                    that.textChanged.emit(newVal);
+                });
                 that.timeoutSaving = null;
             }, this._durationBeforeCallback);
         }
@@ -149,6 +161,7 @@ var AceEditorDirective = (function () {
     /** @nocollapse */
     AceEditorDirective.ctorParameters = function () { return [
         { type: ElementRef, },
+        { type: NgZone, },
     ]; };
     AceEditorDirective.propDecorators = {
         "textChanged": [{ type: Output },],
