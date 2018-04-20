@@ -41,7 +41,7 @@ var AceEditorDirective = (function () {
     };
     AceEditorDirective.prototype.updateText = function () {
         var _this = this;
-        var newVal = this.editor.getValue(), that = this;
+        var newVal = this.editor.getValue();
         if (newVal === this.oldText) {
             return;
         }
@@ -57,12 +57,12 @@ var AceEditorDirective = (function () {
                 clearTimeout(this.timeoutSaving);
             }
             this.timeoutSaving = setTimeout(function () {
-                that._text = newVal;
-                this.zone.run(function () {
-                    that.textChange.emit(newVal);
-                    that.textChanged.emit(newVal);
+                _this._text = newVal;
+                _this.zone.run(function () {
+                    _this.textChange.emit(newVal);
+                    _this.textChanged.emit(newVal);
                 });
-                that.timeoutSaving = null;
+                _this.timeoutSaving = null;
             }, this._durationBeforeCallback);
         }
         this.oldText = newVal;
