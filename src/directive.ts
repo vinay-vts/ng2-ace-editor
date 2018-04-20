@@ -52,7 +52,7 @@ export class AceEditorDirective implements OnInit, OnDestroy {
     }
 
     updateText() {
-        let newVal = this.editor.getValue(), that = this;
+        let newVal = this.editor.getValue();
         if (newVal === this.oldText) {
             return;
         }
@@ -67,13 +67,13 @@ export class AceEditorDirective implements OnInit, OnDestroy {
                 clearTimeout(this.timeoutSaving);
             }
 
-            this.timeoutSaving = setTimeout(function () {
-                that._text = newVal;
+            this.timeoutSaving = setTimeout(() => {
+                this._text = newVal;
                 this.zone.run(() => {
-                    that.textChange.emit(newVal);
-                    that.textChanged.emit(newVal);
+                    this.textChange.emit(newVal);
+                    this.textChanged.emit(newVal);
                 });
-                that.timeoutSaving = null;
+                this.timeoutSaving = null;
             }, this._durationBeforeCallback);
         }
         this.oldText = newVal;

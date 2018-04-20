@@ -61,7 +61,7 @@ export class AceEditorComponent implements ControlValueAccessor, OnInit, OnDestr
     }
 
     updateText() {
-        let newVal = this._editor.getValue(), that = this;
+        let newVal = this._editor.getValue();
         if (newVal === this.oldText) {
             return;
         }
@@ -77,13 +77,13 @@ export class AceEditorComponent implements ControlValueAccessor, OnInit, OnDestr
                 clearTimeout(this.timeoutSaving);
             }
 
-            this.timeoutSaving = setTimeout(function () {
-                that._text = newVal;
+            this.timeoutSaving = setTimeout(() => {
+                this._text = newVal;
                 this.zone.run(() => {
-                    that.textChange.emit(newVal);
-                    that.textChanged.emit(newVal);
+                    this.textChange.emit(newVal);
+                    this.textChanged.emit(newVal);
                 });
-                that.timeoutSaving = null;
+                this.timeoutSaving = null;
             }, this._durationBeforeCallback);
         }
         this.oldText = newVal;
