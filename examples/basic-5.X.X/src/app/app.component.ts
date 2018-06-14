@@ -23,9 +23,9 @@ export class AppComponent implements AfterViewInit {
   ngAfterViewInit() {
     const Range = ace.require('ace/range')['Range'];
 
-    this.highlight
-      .getEditor()
-      .session.addMarker(new Range(0, 0, 2, 1), 'myMarker', 'fullLine');
+    this.highlight.getEditor().session.addMarker(
+      new Range(0, 0, 2, 1), 'myMarker', 'fullLine'
+    );
 
     this.firstEditor.getEditor().session.setOption('useWorker', true);
   }
