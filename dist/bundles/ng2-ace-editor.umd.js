@@ -1,9 +1,18 @@
 (function (global, factory) {
-    typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@angular/core'), require('brace'), require('brace/theme/monokai'), require('brace/mode/html'), require('@angular/forms')) :
-    typeof define === 'function' && define.amd ? define(['exports', '@angular/core', 'brace', 'brace/theme/monokai', 'brace/mode/html', '@angular/forms'], factory) :
-    (factory((global.ng = global.ng || {}, global.ng.ng2aceeditor = {}),global.ng.core,null,null,null,global.ng.forms));
-}(this, (function (exports,core,brace,monokai,html,forms) { 'use strict';
+    typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@angular/core'), require('brace'), require('brace/theme/monokai'), require('@angular/forms')) :
+    typeof define === 'function' && define.amd ? define(['exports', '@angular/core', 'brace', 'brace/theme/monokai', '@angular/forms'], factory) :
+    (global = global || self, factory((global.ng = global.ng || {}, global.ng.ng2aceeditor = {}), global.ng.core, null, null, global.ng.forms));
+}(this, function (exports, core, brace, monokai, forms) { 'use strict';
 
+    var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+        var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+        if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+        else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+        return c > 3 && r && Object.defineProperty(target, key, r), r;
+    };
+    var __metadata = (undefined && undefined.__metadata) || function (k, v) {
+        if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+    };
     var AceEditorDirective = /** @class */ (function () {
         function AceEditorDirective(elementRef, zone) {
             var _this = this;
@@ -155,30 +164,67 @@
             enumerable: true,
             configurable: true
         });
-        AceEditorDirective.decorators = [
-            { type: core.Directive, args: [{
-                        selector: '[ace-editor]'
-                    },] },
-        ];
-        /** @nocollapse */
-        AceEditorDirective.ctorParameters = function () { return [
-            { type: core.ElementRef },
-            { type: core.NgZone }
-        ]; };
-        AceEditorDirective.propDecorators = {
-            textChanged: [{ type: core.Output }],
-            textChange: [{ type: core.Output }],
-            options: [{ type: core.Input }],
-            readOnly: [{ type: core.Input }],
-            theme: [{ type: core.Input }],
-            mode: [{ type: core.Input }],
-            text: [{ type: core.Input }],
-            autoUpdateContent: [{ type: core.Input }],
-            durationBeforeCallback: [{ type: core.Input }]
-        };
+        __decorate([
+            core.Output(),
+            __metadata("design:type", Object)
+        ], AceEditorDirective.prototype, "textChanged", void 0);
+        __decorate([
+            core.Output(),
+            __metadata("design:type", Object)
+        ], AceEditorDirective.prototype, "textChange", void 0);
+        __decorate([
+            core.Input(),
+            __metadata("design:type", Object),
+            __metadata("design:paramtypes", [Object])
+        ], AceEditorDirective.prototype, "options", null);
+        __decorate([
+            core.Input(),
+            __metadata("design:type", Object),
+            __metadata("design:paramtypes", [Object])
+        ], AceEditorDirective.prototype, "readOnly", null);
+        __decorate([
+            core.Input(),
+            __metadata("design:type", Object),
+            __metadata("design:paramtypes", [Object])
+        ], AceEditorDirective.prototype, "theme", null);
+        __decorate([
+            core.Input(),
+            __metadata("design:type", Object),
+            __metadata("design:paramtypes", [Object])
+        ], AceEditorDirective.prototype, "mode", null);
+        __decorate([
+            core.Input(),
+            __metadata("design:type", String),
+            __metadata("design:paramtypes", [String])
+        ], AceEditorDirective.prototype, "text", null);
+        __decorate([
+            core.Input(),
+            __metadata("design:type", Object),
+            __metadata("design:paramtypes", [Object])
+        ], AceEditorDirective.prototype, "autoUpdateContent", null);
+        __decorate([
+            core.Input(),
+            __metadata("design:type", Number),
+            __metadata("design:paramtypes", [Number])
+        ], AceEditorDirective.prototype, "durationBeforeCallback", null);
+        AceEditorDirective = __decorate([
+            core.Directive({
+                selector: '[ace-editor]'
+            }),
+            __metadata("design:paramtypes", [core.ElementRef, core.NgZone])
+        ], AceEditorDirective);
         return AceEditorDirective;
     }());
 
+    var __decorate$1 = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+        var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+        if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+        else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+        return c > 3 && r && Object.defineProperty(target, key, r), r;
+    };
+    var __metadata$1 = (undefined && undefined.__metadata) || function (k, v) {
+        if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+    };
     var AceEditorComponent = /** @class */ (function () {
         function AceEditorComponent(elementRef, zone) {
             var _this = this;
@@ -203,6 +249,7 @@
             });
             this._editor.$blockScrolling = Infinity;
         }
+        AceEditorComponent_1 = AceEditorComponent;
         AceEditorComponent.prototype.ngOnInit = function () {
             this.init();
             this.initEvents();
@@ -362,39 +409,81 @@
         AceEditorComponent.prototype.getEditor = function () {
             return this._editor;
         };
-        AceEditorComponent.decorators = [
-            { type: core.Component, args: [{
-                        selector: 'ace-editor',
-                        template: '',
-                        styles: [':host { display:block;width:100%; }'],
-                        providers: [{
-                                provide: forms.NG_VALUE_ACCESSOR,
-                                useExisting: core.forwardRef(function () { return AceEditorComponent; }),
-                                multi: true
-                            }]
-                    },] },
-        ];
-        /** @nocollapse */
-        AceEditorComponent.ctorParameters = function () { return [
-            { type: core.ElementRef },
-            { type: core.NgZone }
-        ]; };
-        AceEditorComponent.propDecorators = {
-            textChanged: [{ type: core.Output }],
-            textChange: [{ type: core.Output }],
-            style: [{ type: core.Input }],
-            options: [{ type: core.Input }],
-            readOnly: [{ type: core.Input }],
-            theme: [{ type: core.Input }],
-            mode: [{ type: core.Input }],
-            value: [{ type: core.Input }],
-            text: [{ type: core.Input }],
-            autoUpdateContent: [{ type: core.Input }],
-            durationBeforeCallback: [{ type: core.Input }]
-        };
+        var AceEditorComponent_1;
+        __decorate$1([
+            core.Output(),
+            __metadata$1("design:type", Object)
+        ], AceEditorComponent.prototype, "textChanged", void 0);
+        __decorate$1([
+            core.Output(),
+            __metadata$1("design:type", Object)
+        ], AceEditorComponent.prototype, "textChange", void 0);
+        __decorate$1([
+            core.Input(),
+            __metadata$1("design:type", Object)
+        ], AceEditorComponent.prototype, "style", void 0);
+        __decorate$1([
+            core.Input(),
+            __metadata$1("design:type", Object),
+            __metadata$1("design:paramtypes", [Object])
+        ], AceEditorComponent.prototype, "options", null);
+        __decorate$1([
+            core.Input(),
+            __metadata$1("design:type", Object),
+            __metadata$1("design:paramtypes", [Object])
+        ], AceEditorComponent.prototype, "readOnly", null);
+        __decorate$1([
+            core.Input(),
+            __metadata$1("design:type", Object),
+            __metadata$1("design:paramtypes", [Object])
+        ], AceEditorComponent.prototype, "theme", null);
+        __decorate$1([
+            core.Input(),
+            __metadata$1("design:type", Object),
+            __metadata$1("design:paramtypes", [Object])
+        ], AceEditorComponent.prototype, "mode", null);
+        __decorate$1([
+            core.Input(),
+            __metadata$1("design:type", String),
+            __metadata$1("design:paramtypes", [String])
+        ], AceEditorComponent.prototype, "value", null);
+        __decorate$1([
+            core.Input(),
+            __metadata$1("design:type", String),
+            __metadata$1("design:paramtypes", [String])
+        ], AceEditorComponent.prototype, "text", null);
+        __decorate$1([
+            core.Input(),
+            __metadata$1("design:type", Object),
+            __metadata$1("design:paramtypes", [Object])
+        ], AceEditorComponent.prototype, "autoUpdateContent", null);
+        __decorate$1([
+            core.Input(),
+            __metadata$1("design:type", Number),
+            __metadata$1("design:paramtypes", [Number])
+        ], AceEditorComponent.prototype, "durationBeforeCallback", null);
+        AceEditorComponent = AceEditorComponent_1 = __decorate$1([
+            core.Component({
+                selector: 'ace-editor',
+                template: '',
+                styles: [':host { display:block;width:100%; }'],
+                providers: [{
+                        provide: forms.NG_VALUE_ACCESSOR,
+                        useExisting: core.forwardRef(function () { return AceEditorComponent_1; }),
+                        multi: true
+                    }]
+            }),
+            __metadata$1("design:paramtypes", [core.ElementRef, core.NgZone])
+        ], AceEditorComponent);
         return AceEditorComponent;
     }());
 
+    var __decorate$2 = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+        var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+        if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+        else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+        return c > 3 && r && Object.defineProperty(target, key, r), r;
+    };
     var list = [
         AceEditorComponent,
         AceEditorDirective
@@ -402,14 +491,14 @@
     var AceEditorModule = /** @class */ (function () {
         function AceEditorModule() {
         }
-        AceEditorModule.decorators = [
-            { type: core.NgModule, args: [{
-                        declarations: list.slice(),
-                        imports: [],
-                        providers: [],
-                        exports: list
-                    },] },
-        ];
+        AceEditorModule = __decorate$2([
+            core.NgModule({
+                declarations: list.slice(),
+                imports: [],
+                providers: [],
+                exports: list
+            })
+        ], AceEditorModule);
         return AceEditorModule;
     }());
 
@@ -419,4 +508,4 @@
 
     Object.defineProperty(exports, '__esModule', { value: true });
 
-})));
+}));

@@ -1,7 +1,15 @@
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
 import { Directive, EventEmitter, Output, ElementRef, Input, NgZone } from "@angular/core";
 import "brace";
 import "brace/theme/monokai";
-
 var AceEditorDirective = /** @class */ (function () {
     function AceEditorDirective(elementRef, zone) {
         var _this = this;
@@ -153,27 +161,55 @@ var AceEditorDirective = /** @class */ (function () {
         enumerable: true,
         configurable: true
     });
-    AceEditorDirective.decorators = [
-        { type: Directive, args: [{
-                    selector: '[ace-editor]'
-                },] },
-    ];
-    /** @nocollapse */
-    AceEditorDirective.ctorParameters = function () { return [
-        { type: ElementRef },
-        { type: NgZone }
-    ]; };
-    AceEditorDirective.propDecorators = {
-        textChanged: [{ type: Output }],
-        textChange: [{ type: Output }],
-        options: [{ type: Input }],
-        readOnly: [{ type: Input }],
-        theme: [{ type: Input }],
-        mode: [{ type: Input }],
-        text: [{ type: Input }],
-        autoUpdateContent: [{ type: Input }],
-        durationBeforeCallback: [{ type: Input }]
-    };
+    __decorate([
+        Output(),
+        __metadata("design:type", Object)
+    ], AceEditorDirective.prototype, "textChanged", void 0);
+    __decorate([
+        Output(),
+        __metadata("design:type", Object)
+    ], AceEditorDirective.prototype, "textChange", void 0);
+    __decorate([
+        Input(),
+        __metadata("design:type", Object),
+        __metadata("design:paramtypes", [Object])
+    ], AceEditorDirective.prototype, "options", null);
+    __decorate([
+        Input(),
+        __metadata("design:type", Object),
+        __metadata("design:paramtypes", [Object])
+    ], AceEditorDirective.prototype, "readOnly", null);
+    __decorate([
+        Input(),
+        __metadata("design:type", Object),
+        __metadata("design:paramtypes", [Object])
+    ], AceEditorDirective.prototype, "theme", null);
+    __decorate([
+        Input(),
+        __metadata("design:type", Object),
+        __metadata("design:paramtypes", [Object])
+    ], AceEditorDirective.prototype, "mode", null);
+    __decorate([
+        Input(),
+        __metadata("design:type", String),
+        __metadata("design:paramtypes", [String])
+    ], AceEditorDirective.prototype, "text", null);
+    __decorate([
+        Input(),
+        __metadata("design:type", Object),
+        __metadata("design:paramtypes", [Object])
+    ], AceEditorDirective.prototype, "autoUpdateContent", null);
+    __decorate([
+        Input(),
+        __metadata("design:type", Number),
+        __metadata("design:paramtypes", [Number])
+    ], AceEditorDirective.prototype, "durationBeforeCallback", null);
+    AceEditorDirective = __decorate([
+        Directive({
+            selector: '[ace-editor]'
+        }),
+        __metadata("design:paramtypes", [ElementRef, NgZone])
+    ], AceEditorDirective);
     return AceEditorDirective;
 }());
 export { AceEditorDirective };

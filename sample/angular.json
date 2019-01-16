@@ -24,7 +24,10 @@
             "tsConfig": "src/tsconfig.app.json",
             "assets": ["src/favicon.ico", "src/assets"],
             "styles": ["src/styles.sass"],
-            "scripts": ["node_modules/ace-builds/src-min/ace.js"]
+            "scripts": [
+              "node_modules/ace-builds/src-min/ace.js",
+              "node_modules/ace-builds/src-min/mode-html.js"
+            ]
           },
           "configurations": {
             "production": {
