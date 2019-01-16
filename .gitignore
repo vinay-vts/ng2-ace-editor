@@ -22,3 +22,5 @@ typings
 *.ngfactory.ts
 src/*.d.ts
 src/*.js
+.rpt2_cache
+.angulardoc.json
