@@ -1,13 +1,13 @@
 {
-    "name": "ng2-ace-editor",
+    "name": "ng2-ace-editor-18",
     "version": "1.0.0",
     "description": "Ace editor integration with typescript for Angular.",
-    "main": "bundles/ng2-ace-editor.umd.min.js",
+    "main": "bundles/ng2-ace-editor-18.umd.min.js",
     "module": "index.js",
     "typings": "index.d.ts",
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/fxmontigny/ng2-ace-editor.git"
+        "url": "git+https://github.com/fxmontigny/ng2-ace-editor-18.git"
     },
     "keywords": [
         "angular",
@@ -24,7 +24,7 @@
     "author": "François-Xavier Montigny <fxaviermontigny@gmail.com>",
     "license": "MIT",
     "bugs": {
-        "url": "https://github.com/fxmontigny/ng2-ace-editor/issues"
+        "url": "https://github.com/fxmontigny/ng2-ace-editor-18/issues"
     },
     "dependencies": {
         "ace-builds": "^1.32.2",
