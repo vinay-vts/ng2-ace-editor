@@ -1,4 +1,4 @@
-import { Component, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, ViewChild, AfterViewInit, ElementRef } from '@angular/core';
 import 'brace/theme/github';
 import 'brace/mode/sql';
 declare let ace: any;
@@ -12,9 +12,9 @@ export class AppComponent implements AfterViewInit {
   content = '<strong>Hi</strong>';
   contentAutoUpdate = 'SELECT * FROM autoUpdate;';
   myCode = 'SELECT * FROM tabs;';
-  @ViewChild('highlight') highlight;
-  @ViewChild('editorInfinity') editorInfinity;
-  @ViewChild('firstEditor') firstEditor;
+  @ViewChild('highlight') highlight!: any;
+  @ViewChild('editorInfinity') editorInfinity!: any;
+  @ViewChild('firstEditor') firstEditor!: any;
 
   onRuleChange(e) {
     console.log(e);
