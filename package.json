@@ -1,4 +1,7 @@
 {
+	"name": "@vinay-yadav/ng2-ace-editor",
+	"version": "18.0.0",
+	"type": "module",
 	"scripts": {
 		"transpile": "ngc",
 		"package": "rollup -c",
