@@ -1,28 +1,27 @@
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
 import { NgModule } from "@angular/core";
 import { AceEditorComponent } from "./component";
 import { AceEditorDirective } from "./directive";
-var list = [
+import * as i0 from "@angular/core";
+const list = [
     AceEditorComponent,
     AceEditorDirective
 ];
-var AceEditorModule = /** @class */ (function () {
-    function AceEditorModule() {
-    }
-    AceEditorModule = __decorate([
-        NgModule({
-            declarations: list.slice(),
-            imports: [],
-            providers: [],
-            exports: list
-        })
-    ], AceEditorModule);
-    return AceEditorModule;
-}());
-export { AceEditorModule };
+export class AceEditorModule {
+    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "18.2.13", ngImport: i0, type: AceEditorModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule });
+    static ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "18.2.13", ngImport: i0, type: AceEditorModule, declarations: [AceEditorComponent,
+            AceEditorDirective], exports: [AceEditorComponent,
+            AceEditorDirective] });
+    static ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "18.2.13", ngImport: i0, type: AceEditorModule });
+}
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "18.2.13", ngImport: i0, type: AceEditorModule, decorators: [{
+            type: NgModule,
+            args: [{
+                    declarations: [
+                        ...list
+                    ],
+                    imports: [],
+                    providers: [],
+                    exports: list
+                }]
+        }] });
 //# sourceMappingURL=module.js.map

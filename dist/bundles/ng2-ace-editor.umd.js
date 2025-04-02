@@ -1,134 +1,125 @@
 (function (global, factory) {
     typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@angular/core'), require('brace'), require('brace/theme/monokai'), require('@angular/forms')) :
     typeof define === 'function' && define.amd ? define(['exports', '@angular/core', 'brace', 'brace/theme/monokai', '@angular/forms'], factory) :
-    (global = global || self, factory((global.ng = global.ng || {}, global.ng.ng2aceeditor = {}), global.ng.core, null, null, global.ng.forms));
-}(this, function (exports, core, brace, monokai, forms) { 'use strict';
+    (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory((global.ng = global.ng || {}, global.ng.ng2aceeditor = {}), global.ng.core, null, null, global.ng.forms));
+})(this, (function (exports, i0, brace, monokai, forms) { 'use strict';
 
-    var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
-        var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-        if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-        else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-        return c > 3 && r && Object.defineProperty(target, key, r), r;
-    };
-    var __metadata = (undefined && undefined.__metadata) || function (k, v) {
-        if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-    };
-    var AceEditorDirective = /** @class */ (function () {
-        function AceEditorDirective(elementRef, zone) {
-            var _this = this;
+    function _interopNamespaceDefault(e) {
+        var n = Object.create(null);
+        if (e) {
+            Object.keys(e).forEach(function (k) {
+                if (k !== 'default') {
+                    var d = Object.getOwnPropertyDescriptor(e, k);
+                    Object.defineProperty(n, k, d.get ? d : {
+                        enumerable: true,
+                        get: function () { return e[k]; }
+                    });
+                }
+            });
+        }
+        n.default = e;
+        return Object.freeze(n);
+    }
+
+    var i0__namespace = /*#__PURE__*/_interopNamespaceDefault(i0);
+
+    class AceEditorDirective {
+        zone;
+        textChanged = new i0.EventEmitter();
+        textChange = new i0.EventEmitter();
+        _options = {};
+        _readOnly = false;
+        _theme = "monokai";
+        _mode = "html";
+        _autoUpdateContent = true;
+        _durationBeforeCallback = 0;
+        _text = "";
+        editor;
+        oldText;
+        timeoutSaving;
+        constructor(elementRef, zone) {
             this.zone = zone;
-            this.textChanged = new core.EventEmitter();
-            this.textChange = new core.EventEmitter();
-            this._options = {};
-            this._readOnly = false;
-            this._theme = "monokai";
-            this._mode = "html";
-            this._autoUpdateContent = true;
-            this._durationBeforeCallback = 0;
-            this._text = "";
-            var el = elementRef.nativeElement;
-            this.zone.runOutsideAngular(function () {
-                _this.editor = ace["edit"](el);
+            let el = elementRef.nativeElement;
+            this.zone.runOutsideAngular(() => {
+                this.editor = ace["edit"](el);
             });
             this.editor.$blockScrolling = Infinity;
         }
-        AceEditorDirective.prototype.ngOnInit = function () {
+        ngOnInit() {
             this.init();
             this.initEvents();
-        };
-        AceEditorDirective.prototype.ngOnDestroy = function () {
+        }
+        ngOnDestroy() {
             this.editor.destroy();
-        };
-        AceEditorDirective.prototype.init = function () {
+        }
+        init() {
             this.editor.setOptions(this._options || {});
-            this.editor.setTheme("ace/theme/" + this._theme);
+            this.editor.setTheme(`ace/theme/${this._theme}`);
             this.setMode(this._mode);
             this.editor.setReadOnly(this._readOnly);
-        };
-        AceEditorDirective.prototype.initEvents = function () {
-            var _this = this;
-            this.editor.on('change', function () { return _this.updateText(); });
-            this.editor.on('paste', function () { return _this.updateText(); });
-        };
-        AceEditorDirective.prototype.updateText = function () {
-            var _this = this;
-            var newVal = this.editor.getValue();
+        }
+        initEvents() {
+            this.editor.on('change', () => this.updateText());
+            this.editor.on('paste', () => this.updateText());
+        }
+        updateText() {
+            let newVal = this.editor.getValue();
             if (newVal === this.oldText) {
                 return;
             }
             if (!this._durationBeforeCallback) {
                 this._text = newVal;
-                this.zone.run(function () {
-                    _this.textChange.emit(newVal);
-                    _this.textChanged.emit(newVal);
+                this.zone.run(() => {
+                    this.textChange.emit(newVal);
+                    this.textChanged.emit(newVal);
                 });
             }
             else {
                 if (this.timeoutSaving != null) {
                     clearTimeout(this.timeoutSaving);
                 }
-                this.timeoutSaving = setTimeout(function () {
-                    _this._text = newVal;
-                    _this.zone.run(function () {
-                        _this.textChange.emit(newVal);
-                        _this.textChanged.emit(newVal);
+                this.timeoutSaving = setTimeout(() => {
+                    this._text = newVal;
+                    this.zone.run(() => {
+                        this.textChange.emit(newVal);
+                        this.textChanged.emit(newVal);
                     });
-                    _this.timeoutSaving = null;
+                    this.timeoutSaving = null;
                 }, this._durationBeforeCallback);
             }
             this.oldText = newVal;
-        };
-        Object.defineProperty(AceEditorDirective.prototype, "options", {
-            set: function (options) {
-                this._options = options;
-                this.editor.setOptions(options || {});
-            },
-            enumerable: true,
-            configurable: true
-        });
-        Object.defineProperty(AceEditorDirective.prototype, "readOnly", {
-            set: function (readOnly) {
-                this._readOnly = readOnly;
-                this.editor.setReadOnly(readOnly);
-            },
-            enumerable: true,
-            configurable: true
-        });
-        Object.defineProperty(AceEditorDirective.prototype, "theme", {
-            set: function (theme) {
-                this._theme = theme;
-                this.editor.setTheme("ace/theme/" + theme);
-            },
-            enumerable: true,
-            configurable: true
-        });
-        Object.defineProperty(AceEditorDirective.prototype, "mode", {
-            set: function (mode) {
-                this.setMode(mode);
-            },
-            enumerable: true,
-            configurable: true
-        });
-        AceEditorDirective.prototype.setMode = function (mode) {
+        }
+        set options(options) {
+            this._options = options;
+            this.editor.setOptions(options || {});
+        }
+        set readOnly(readOnly) {
+            this._readOnly = readOnly;
+            this.editor.setReadOnly(readOnly);
+        }
+        set theme(theme) {
+            this._theme = theme;
+            this.editor.setTheme(`ace/theme/${theme}`);
+        }
+        set mode(mode) {
+            this.setMode(mode);
+        }
+        setMode(mode) {
             this._mode = mode;
             if (typeof this._mode === 'object') {
                 this.editor.getSession().setMode(this._mode);
             }
             else {
-                this.editor.getSession().setMode("ace/mode/" + this._mode);
+                this.editor.getSession().setMode(`ace/mode/${this._mode}`);
             }
-        };
-        Object.defineProperty(AceEditorDirective.prototype, "text", {
-            get: function () {
-                return this._text;
-            },
-            set: function (text) {
-                this.setText(text);
-            },
-            enumerable: true,
-            configurable: true
-        });
-        AceEditorDirective.prototype.setText = function (text) {
+        }
+        get text() {
+            return this._text;
+        }
+        set text(text) {
+            this.setText(text);
+        }
+        setText(text) {
             if (this._text !== text) {
                 if (text === null || text === undefined) {
                     text = "";
@@ -139,146 +130,97 @@
                     this.editor.clearSelection();
                 }
             }
-        };
-        Object.defineProperty(AceEditorDirective.prototype, "autoUpdateContent", {
-            set: function (status) {
-                this._autoUpdateContent = status;
-            },
-            enumerable: true,
-            configurable: true
-        });
-        Object.defineProperty(AceEditorDirective.prototype, "durationBeforeCallback", {
-            set: function (num) {
-                this.setDurationBeforeCallback(num);
-            },
-            enumerable: true,
-            configurable: true
-        });
-        AceEditorDirective.prototype.setDurationBeforeCallback = function (num) {
+        }
+        set autoUpdateContent(status) {
+            this._autoUpdateContent = status;
+        }
+        set durationBeforeCallback(num) {
+            this.setDurationBeforeCallback(num);
+        }
+        setDurationBeforeCallback(num) {
             this._durationBeforeCallback = num;
-        };
-        Object.defineProperty(AceEditorDirective.prototype, "aceEditor", {
-            get: function () {
-                return this.editor;
-            },
-            enumerable: true,
-            configurable: true
-        });
-        __decorate([
-            core.Output(),
-            __metadata("design:type", Object)
-        ], AceEditorDirective.prototype, "textChanged", void 0);
-        __decorate([
-            core.Output(),
-            __metadata("design:type", Object)
-        ], AceEditorDirective.prototype, "textChange", void 0);
-        __decorate([
-            core.Input(),
-            __metadata("design:type", Object),
-            __metadata("design:paramtypes", [Object])
-        ], AceEditorDirective.prototype, "options", null);
-        __decorate([
-            core.Input(),
-            __metadata("design:type", Object),
-            __metadata("design:paramtypes", [Object])
-        ], AceEditorDirective.prototype, "readOnly", null);
-        __decorate([
-            core.Input(),
-            __metadata("design:type", Object),
-            __metadata("design:paramtypes", [Object])
-        ], AceEditorDirective.prototype, "theme", null);
-        __decorate([
-            core.Input(),
-            __metadata("design:type", Object),
-            __metadata("design:paramtypes", [Object])
-        ], AceEditorDirective.prototype, "mode", null);
-        __decorate([
-            core.Input(),
-            __metadata("design:type", String),
-            __metadata("design:paramtypes", [String])
-        ], AceEditorDirective.prototype, "text", null);
-        __decorate([
-            core.Input(),
-            __metadata("design:type", Object),
-            __metadata("design:paramtypes", [Object])
-        ], AceEditorDirective.prototype, "autoUpdateContent", null);
-        __decorate([
-            core.Input(),
-            __metadata("design:type", Number),
-            __metadata("design:paramtypes", [Number])
-        ], AceEditorDirective.prototype, "durationBeforeCallback", null);
-        AceEditorDirective = __decorate([
-            core.Directive({
-                selector: '[ace-editor]'
-            }),
-            __metadata("design:paramtypes", [core.ElementRef, core.NgZone])
-        ], AceEditorDirective);
-        return AceEditorDirective;
-    }());
+        }
+        get aceEditor() {
+            return this.editor;
+        }
+        static ɵfac = i0__namespace.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "18.2.13", ngImport: i0__namespace, type: AceEditorDirective, deps: [{ token: i0__namespace.ElementRef }, { token: i0__namespace.NgZone }], target: i0__namespace.ɵɵFactoryTarget.Directive });
+        static ɵdir = i0__namespace.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "18.2.13", type: AceEditorDirective, selector: "[ace-editor]", inputs: { options: "options", readOnly: "readOnly", theme: "theme", mode: "mode", text: "text", autoUpdateContent: "autoUpdateContent", durationBeforeCallback: "durationBeforeCallback" }, outputs: { textChanged: "textChanged", textChange: "textChange" }, ngImport: i0__namespace });
+    }
+    i0__namespace.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "18.2.13", ngImport: i0__namespace, type: AceEditorDirective, decorators: [{
+                type: i0.Directive,
+                args: [{
+                        selector: '[ace-editor]'
+                    }]
+            }], ctorParameters: () => [{ type: i0__namespace.ElementRef }, { type: i0__namespace.NgZone }], propDecorators: { textChanged: [{
+                    type: i0.Output
+                }], textChange: [{
+                    type: i0.Output
+                }], options: [{
+                    type: i0.Input
+                }], readOnly: [{
+                    type: i0.Input
+                }], theme: [{
+                    type: i0.Input
+                }], mode: [{
+                    type: i0.Input
+                }], text: [{
+                    type: i0.Input
+                }], autoUpdateContent: [{
+                    type: i0.Input
+                }], durationBeforeCallback: [{
+                    type: i0.Input
+                }] } });
 
-    var __decorate$1 = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
-        var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-        if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-        else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-        return c > 3 && r && Object.defineProperty(target, key, r), r;
-    };
-    var __metadata$1 = (undefined && undefined.__metadata) || function (k, v) {
-        if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-    };
-    var AceEditorComponent = /** @class */ (function () {
-        function AceEditorComponent(elementRef, zone) {
-            var _this = this;
+    class AceEditorComponent {
+        zone;
+        textChanged = new i0.EventEmitter();
+        textChange = new i0.EventEmitter();
+        style = {};
+        _options = {};
+        _readOnly = false;
+        _theme = "monokai";
+        _mode = "html";
+        _autoUpdateContent = true;
+        _editor;
+        _durationBeforeCallback = 0;
+        _text = "";
+        oldText;
+        timeoutSaving;
+        constructor(elementRef, zone) {
             this.zone = zone;
-            this.textChanged = new core.EventEmitter();
-            this.textChange = new core.EventEmitter();
-            this.style = {};
-            this._options = {};
-            this._readOnly = false;
-            this._theme = "monokai";
-            this._mode = "html";
-            this._autoUpdateContent = true;
-            this._durationBeforeCallback = 0;
-            this._text = "";
-            this._onChange = function (_) {
-            };
-            this._onTouched = function () {
-            };
-            var el = elementRef.nativeElement;
-            this.zone.runOutsideAngular(function () {
-                _this._editor = ace['edit'](el);
+            let el = elementRef.nativeElement;
+            this.zone.runOutsideAngular(() => {
+                this._editor = ace['edit'](el);
             });
             this._editor.$blockScrolling = Infinity;
         }
-        AceEditorComponent_1 = AceEditorComponent;
-        AceEditorComponent.prototype.ngOnInit = function () {
+        ngOnInit() {
             this.init();
             this.initEvents();
-        };
-        AceEditorComponent.prototype.ngOnDestroy = function () {
+        }
+        ngOnDestroy() {
             this._editor.destroy();
-        };
-        AceEditorComponent.prototype.init = function () {
+        }
+        init() {
             this.setOptions(this._options || {});
             this.setTheme(this._theme);
             this.setMode(this._mode);
             this.setReadOnly(this._readOnly);
-        };
-        AceEditorComponent.prototype.initEvents = function () {
-            var _this = this;
-            this._editor.on('change', function () { return _this.updateText(); });
-            this._editor.on('paste', function () { return _this.updateText(); });
-        };
-        AceEditorComponent.prototype.updateText = function () {
-            var _this = this;
-            var newVal = this._editor.getValue();
+        }
+        initEvents() {
+            this._editor.on('change', () => this.updateText());
+            this._editor.on('paste', () => this.updateText());
+        }
+        updateText() {
+            let newVal = this._editor.getValue();
             if (newVal === this.oldText) {
                 return;
             }
             if (!this._durationBeforeCallback) {
                 this._text = newVal;
-                this.zone.run(function () {
-                    _this.textChange.emit(newVal);
-                    _this.textChanged.emit(newVal);
+                this.zone.run(() => {
+                    this.textChange.emit(newVal);
+                    this.textChanged.emit(newVal);
                 });
                 this._onChange(newVal);
             }
@@ -286,96 +228,76 @@
                 if (this.timeoutSaving) {
                     clearTimeout(this.timeoutSaving);
                 }
-                this.timeoutSaving = setTimeout(function () {
-                    _this._text = newVal;
-                    _this.zone.run(function () {
-                        _this.textChange.emit(newVal);
-                        _this.textChanged.emit(newVal);
+                this.timeoutSaving = setTimeout(() => {
+                    this._text = newVal;
+                    this.zone.run(() => {
+                        this.textChange.emit(newVal);
+                        this.textChanged.emit(newVal);
                     });
-                    _this.timeoutSaving = null;
+                    this.timeoutSaving = null;
                 }, this._durationBeforeCallback);
             }
             this.oldText = newVal;
-        };
-        Object.defineProperty(AceEditorComponent.prototype, "options", {
-            set: function (options) {
-                this.setOptions(options);
-            },
-            enumerable: true,
-            configurable: true
-        });
-        AceEditorComponent.prototype.setOptions = function (options) {
+        }
+        set options(options) {
+            this.setOptions(options);
+        }
+        setOptions(options) {
             this._options = options;
             this._editor.setOptions(options || {});
-        };
-        Object.defineProperty(AceEditorComponent.prototype, "readOnly", {
-            set: function (readOnly) {
-                this.setReadOnly(readOnly);
-            },
-            enumerable: true,
-            configurable: true
-        });
-        AceEditorComponent.prototype.setReadOnly = function (readOnly) {
+        }
+        set readOnly(readOnly) {
+            this.setReadOnly(readOnly);
+        }
+        setReadOnly(readOnly) {
             this._readOnly = readOnly;
             this._editor.setReadOnly(readOnly);
-        };
-        Object.defineProperty(AceEditorComponent.prototype, "theme", {
-            set: function (theme) {
-                this.setTheme(theme);
-            },
-            enumerable: true,
-            configurable: true
-        });
-        AceEditorComponent.prototype.setTheme = function (theme) {
+        }
+        set theme(theme) {
+            this.setTheme(theme);
+        }
+        setTheme(theme) {
             this._theme = theme;
-            this._editor.setTheme("ace/theme/" + theme);
-        };
-        Object.defineProperty(AceEditorComponent.prototype, "mode", {
-            set: function (mode) {
-                this.setMode(mode);
-            },
-            enumerable: true,
-            configurable: true
-        });
-        AceEditorComponent.prototype.setMode = function (mode) {
+            this._editor.setTheme(`ace/theme/${theme}`);
+        }
+        set mode(mode) {
+            this.setMode(mode);
+        }
+        setMode(mode) {
             this._mode = mode;
             if (typeof this._mode === 'object') {
                 this._editor.getSession().setMode(this._mode);
             }
             else {
-                this._editor.getSession().setMode("ace/mode/" + this._mode);
+                this._editor.getSession().setMode(`ace/mode/${this._mode}`);
             }
-        };
-        Object.defineProperty(AceEditorComponent.prototype, "value", {
-            get: function () {
-                return this.text;
-            },
-            set: function (value) {
-                this.setText(value);
-            },
-            enumerable: true,
-            configurable: true
-        });
-        AceEditorComponent.prototype.writeValue = function (value) {
+        }
+        get value() {
+            return this.text;
+        }
+        set value(value) {
             this.setText(value);
+        }
+        writeValue(value) {
+            this.setText(value);
+        }
+        _onChange = (_) => {
         };
-        AceEditorComponent.prototype.registerOnChange = function (fn) {
+        registerOnChange(fn) {
             this._onChange = fn;
+        }
+        _onTouched = () => {
         };
-        AceEditorComponent.prototype.registerOnTouched = function (fn) {
+        registerOnTouched(fn) {
             this._onTouched = fn;
-        };
-        Object.defineProperty(AceEditorComponent.prototype, "text", {
-            get: function () {
-                return this._text;
-            },
-            set: function (text) {
-                this.setText(text);
-            },
-            enumerable: true,
-            configurable: true
-        });
-        AceEditorComponent.prototype.setText = function (text) {
+        }
+        get text() {
+            return this._text;
+        }
+        set text(text) {
+            this.setText(text);
+        }
+        setText(text) {
             if (text === null || text === undefined) {
                 text = "";
             }
@@ -385,127 +307,85 @@
                 this._onChange(text);
                 this._editor.clearSelection();
             }
-        };
-        Object.defineProperty(AceEditorComponent.prototype, "autoUpdateContent", {
-            set: function (status) {
-                this.setAutoUpdateContent(status);
-            },
-            enumerable: true,
-            configurable: true
-        });
-        AceEditorComponent.prototype.setAutoUpdateContent = function (status) {
+        }
+        set autoUpdateContent(status) {
+            this.setAutoUpdateContent(status);
+        }
+        setAutoUpdateContent(status) {
             this._autoUpdateContent = status;
-        };
-        Object.defineProperty(AceEditorComponent.prototype, "durationBeforeCallback", {
-            set: function (num) {
-                this.setDurationBeforeCallback(num);
-            },
-            enumerable: true,
-            configurable: true
-        });
-        AceEditorComponent.prototype.setDurationBeforeCallback = function (num) {
+        }
+        set durationBeforeCallback(num) {
+            this.setDurationBeforeCallback(num);
+        }
+        setDurationBeforeCallback(num) {
             this._durationBeforeCallback = num;
-        };
-        AceEditorComponent.prototype.getEditor = function () {
+        }
+        getEditor() {
             return this._editor;
-        };
-        var AceEditorComponent_1;
-        __decorate$1([
-            core.Output(),
-            __metadata$1("design:type", Object)
-        ], AceEditorComponent.prototype, "textChanged", void 0);
-        __decorate$1([
-            core.Output(),
-            __metadata$1("design:type", Object)
-        ], AceEditorComponent.prototype, "textChange", void 0);
-        __decorate$1([
-            core.Input(),
-            __metadata$1("design:type", Object)
-        ], AceEditorComponent.prototype, "style", void 0);
-        __decorate$1([
-            core.Input(),
-            __metadata$1("design:type", Object),
-            __metadata$1("design:paramtypes", [Object])
-        ], AceEditorComponent.prototype, "options", null);
-        __decorate$1([
-            core.Input(),
-            __metadata$1("design:type", Object),
-            __metadata$1("design:paramtypes", [Object])
-        ], AceEditorComponent.prototype, "readOnly", null);
-        __decorate$1([
-            core.Input(),
-            __metadata$1("design:type", Object),
-            __metadata$1("design:paramtypes", [Object])
-        ], AceEditorComponent.prototype, "theme", null);
-        __decorate$1([
-            core.Input(),
-            __metadata$1("design:type", Object),
-            __metadata$1("design:paramtypes", [Object])
-        ], AceEditorComponent.prototype, "mode", null);
-        __decorate$1([
-            core.Input(),
-            __metadata$1("design:type", String),
-            __metadata$1("design:paramtypes", [String])
-        ], AceEditorComponent.prototype, "value", null);
-        __decorate$1([
-            core.Input(),
-            __metadata$1("design:type", String),
-            __metadata$1("design:paramtypes", [String])
-        ], AceEditorComponent.prototype, "text", null);
-        __decorate$1([
-            core.Input(),
-            __metadata$1("design:type", Object),
-            __metadata$1("design:paramtypes", [Object])
-        ], AceEditorComponent.prototype, "autoUpdateContent", null);
-        __decorate$1([
-            core.Input(),
-            __metadata$1("design:type", Number),
-            __metadata$1("design:paramtypes", [Number])
-        ], AceEditorComponent.prototype, "durationBeforeCallback", null);
-        AceEditorComponent = AceEditorComponent_1 = __decorate$1([
-            core.Component({
-                selector: 'ace-editor',
-                template: '',
-                styles: [':host { display:block;width:100%; }'],
-                providers: [{
-                        provide: forms.NG_VALUE_ACCESSOR,
-                        useExisting: core.forwardRef(function () { return AceEditorComponent_1; }),
-                        multi: true
-                    }]
-            }),
-            __metadata$1("design:paramtypes", [core.ElementRef, core.NgZone])
-        ], AceEditorComponent);
-        return AceEditorComponent;
-    }());
+        }
+        static ɵfac = i0__namespace.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "18.2.13", ngImport: i0__namespace, type: AceEditorComponent, deps: [{ token: i0__namespace.ElementRef }, { token: i0__namespace.NgZone }], target: i0__namespace.ɵɵFactoryTarget.Component });
+        static ɵcmp = i0__namespace.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "18.2.13", type: AceEditorComponent, selector: "ace-editor", inputs: { style: "style", options: "options", readOnly: "readOnly", theme: "theme", mode: "mode", value: "value", text: "text", autoUpdateContent: "autoUpdateContent", durationBeforeCallback: "durationBeforeCallback" }, outputs: { textChanged: "textChanged", textChange: "textChange" }, providers: [{
+                    provide: forms.NG_VALUE_ACCESSOR,
+                    useExisting: i0.forwardRef(() => AceEditorComponent),
+                    multi: true
+                }], ngImport: i0__namespace, template: '', isInline: true, styles: [":host { display:block;width:100%; }"] });
+    }
+    i0__namespace.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "18.2.13", ngImport: i0__namespace, type: AceEditorComponent, decorators: [{
+                type: i0.Component,
+                args: [{ selector: 'ace-editor', template: '', providers: [{
+                                provide: forms.NG_VALUE_ACCESSOR,
+                                useExisting: i0.forwardRef(() => AceEditorComponent),
+                                multi: true
+                            }], styles: [":host { display:block;width:100%; }"] }]
+            }], ctorParameters: () => [{ type: i0__namespace.ElementRef }, { type: i0__namespace.NgZone }], propDecorators: { textChanged: [{
+                    type: i0.Output
+                }], textChange: [{
+                    type: i0.Output
+                }], style: [{
+                    type: i0.Input
+                }], options: [{
+                    type: i0.Input
+                }], readOnly: [{
+                    type: i0.Input
+                }], theme: [{
+                    type: i0.Input
+                }], mode: [{
+                    type: i0.Input
+                }], value: [{
+                    type: i0.Input
+                }], text: [{
+                    type: i0.Input
+                }], autoUpdateContent: [{
+                    type: i0.Input
+                }], durationBeforeCallback: [{
+                    type: i0.Input
+                }] } });
 
-    var __decorate$2 = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
-        var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-        if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-        else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-        return c > 3 && r && Object.defineProperty(target, key, r), r;
-    };
-    var list = [
+    const list = [
         AceEditorComponent,
         AceEditorDirective
     ];
-    var AceEditorModule = /** @class */ (function () {
-        function AceEditorModule() {
-        }
-        AceEditorModule = __decorate$2([
-            core.NgModule({
-                declarations: list.slice(),
-                imports: [],
-                providers: [],
-                exports: list
-            })
-        ], AceEditorModule);
-        return AceEditorModule;
-    }());
+    class AceEditorModule {
+        static ɵfac = i0__namespace.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "18.2.13", ngImport: i0__namespace, type: AceEditorModule, deps: [], target: i0__namespace.ɵɵFactoryTarget.NgModule });
+        static ɵmod = i0__namespace.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "18.2.13", ngImport: i0__namespace, type: AceEditorModule, declarations: [AceEditorComponent,
+                AceEditorDirective], exports: [AceEditorComponent,
+                AceEditorDirective] });
+        static ɵinj = i0__namespace.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "18.2.13", ngImport: i0__namespace, type: AceEditorModule });
+    }
+    i0__namespace.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "18.2.13", ngImport: i0__namespace, type: AceEditorModule, decorators: [{
+                type: i0.NgModule,
+                args: [{
+                        declarations: [
+                            ...list
+                        ],
+                        imports: [],
+                        providers: [],
+                        exports: list
+                    }]
+            }] });
 
-    exports.AceEditorDirective = AceEditorDirective;
     exports.AceEditorComponent = AceEditorComponent;
+    exports.AceEditorDirective = AceEditorDirective;
     exports.AceEditorModule = AceEditorModule;
-
-    Object.defineProperty(exports, '__esModule', { value: true });
 
 }));

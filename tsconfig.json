@@ -1,36 +1,31 @@
 {
   "compilerOptions": {
-    "baseUrl": ".",
-    "declaration": true,
-    "stripInternal": true,
-    "experimentalDecorators": true,
-    "strictNullChecks": true,
-    "noImplicitAny": true,
-    "module": "es2015",
+    "module": "es2022",
     "moduleResolution": "node",
-    "paths": {
-      "@angular/core": [
-        "node_modules/@angular/core"
-      ],
-      "@angular/forms": [
-        "node_modules/@angular/forms"
-      ]
-    },
-    "rootDir": ".",
+    "target": "es2022",
+    "declaration": true,
+    "strict": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "skipLibCheck": true,
+    "lib": ["es2022", "dom"],
     "outDir": "dist",
+    "baseUrl": "./",
     "sourceMap": true,
     "inlineSources": true,
-    "target": "es5",
-    "skipLibCheck": true,
-    "lib": [
-      "es2015",
-      "dom"
-    ]
+    "importHelpers": true,
+    "noImplicitAny": false,
+    "strictNullChecks": false,
+    "types": ["jasmine", "node"]
   },
-  "files": [
-    "index.ts"
-  ],
   "angularCompilerOptions": {
-    "strictMetadataEmit": true
-  }
+    "strictMetadataEmit": true,
+    "strictTemplates": true,
+    "enableResourceInlining": true,
+    "compilationMode": "partial"
+  },
+  "exclude": [
+    "node_modules",
+    "dist"
+  ]
 }
